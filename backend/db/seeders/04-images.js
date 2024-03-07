@@ -1,6 +1,6 @@
 'use strict';
 
-const { Image, Sequelize } = require('../models');
+const { Image, Sequelize } = require('../models/image');
 const bcrypt = require('bcryptjs');
 
 
@@ -13,7 +13,7 @@ if (process.env.NODE_ENV === 'production') {
 
 module.exports = {
     up: async (queryInterface, Sequelize) => {
-        options.tableName = "Posts";
+        options.tableName = "Images";
         return queryInterface.bulkInsert(options, [
             {
                 userId: 1,

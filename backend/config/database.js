@@ -13,8 +13,9 @@ module.exports = {
         password,
         database,
         host,
-        dialect: 'sqlite',
-        seederStorage: 'sequelize'
+        dialect: 'postgres',
+        seederStorage: 'sequelize',
+        port: 5433
     },
     production: {
         use_env_variable: 'DATABASE_URL',

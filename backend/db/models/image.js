@@ -12,8 +12,8 @@ module.exports = (sequelize, DataTypes) => {
          * The `models/index` file will call this method automatically.
          */
         static associate(models) {
-            Image.belongsTo(models.User, { foreignKey: userId });
-            Image.belongsTo(models.Post, { foreignKey: postId });
+            Image.belongsTo(models.User, { foreignKey: "userId" });
+            Image.belongsTo(models.Post, { foreignKey: "postId" });
         }
     }
     Image.init({
@@ -34,5 +34,5 @@ module.exports = (sequelize, DataTypes) => {
         modelName: 'Image',
         defaultScope: {}
     });
-    return Post;
+    return Image;
 };

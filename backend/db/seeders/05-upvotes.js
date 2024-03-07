@@ -1,6 +1,6 @@
 'use strict';
 
-const { Post, Sequelize } = require('../models');
+const { Post, Sequelize } = require('../models/upvote');
 const bcrypt = require('bcryptjs');
 
 
@@ -17,19 +17,27 @@ module.exports = {
         return queryInterface.bulkInsert(options, [
             {
                 userId: 1,
-                typeId: 0,
+                postId: 1,
                 isUpvote: true
             },
             {
                 userId: 2,
-                typeId: 0,
+                postId: 1,
                 isUpvote: false
             },
             {
                 userId: 1,
-                typeId: 1,
+                postId: 1,
                 isUpvote: true
             }
         ]);
+    },
+
+    down: async (queryInterface, Sequelize) => {
+        options.tableName = "Upvotes";
+        const Op = Sequelize.Op;
+        return queryInterface.bulkDelete(options, {
+            userId: { [Op.in]: [1, 2] }
+        });
     }
 };

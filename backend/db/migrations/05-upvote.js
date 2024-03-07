@@ -1,7 +1,7 @@
 'use strict';
 
 let options = {};
-options.tableName = 'Posts';
+options.tableName = 'Upvotes';
 if (process.env.NODE_ENV === 'production') {
     options.schema = process.env.SCHEMA;
 }
@@ -13,7 +13,10 @@ module.exports = {
                 type: Sequelize.INTEGER,
                 allowNull: false,
                 autoIncrement: true,
-                primaryKey: trues
+                primaryKey: true
+            },
+            isUpvote: {
+                type: Sequelize.BOOLEAN,
             },
             userId: {
                 type: Sequelize.INTEGER,
@@ -22,12 +25,16 @@ module.exports = {
                     model: 'Users'
                 }
             },
-            typeId: {
+            postId: {
                 type: Sequelize.INTEGER,
-                allowNull: false,
                 references: {
                     model: 'Posts',
-                    model: 'Comments'
+                }
+            },
+            commentId: {
+                type: Sequelize.INTEGER,
+                references: {
+                    model: 'Comments',
                 }
             },
         }, options);

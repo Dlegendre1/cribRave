@@ -3,16 +3,15 @@ const {
     Model,
     Validator
 } = require('sequelize');
-const { sequelize } = require('.');
-
 module.exports = (sequelize, DataTypes) => {
     class Upvote extends Model {
 
 
 
         static associate(models) {
-            Upvote.belongsTo(models.Post, { foreignKey: typeId });
-            Upvote.belongsTo(models.Comment, { foreignKey: typeId });
+            Upvote.belongsTo(models.User, { foreignKey: "userId" });
+            Upvote.belongsTo(models.Post, { foreignKey: "postId" });
+            Upvote.belongsTo(models.Comment, { foreignKey: "commentId" });
         }
     }
     Upvote.init({
@@ -20,13 +19,19 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER,
             allowNull: false
         },
-        typeId: {
+        postId: {
             type: DataTypes.INTEGER,
-            allowNull: false
+        },
+        commentId: {
+            type: DataTypes.INTEGER,
         },
         isUpvote: {
             type: DataTypes.BOOLEAN
         }
+    }, {
+        sequelize,
+        modelName: 'Upvote',
+        defaultScope: {}
     });
     return Upvote;
 };
