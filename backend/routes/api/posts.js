@@ -1,9 +1,8 @@
 const express = require('express');
-const bcrypt = require('bcryptjs');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
-const { User, Post, Comment, Image, Upvote } = require('../../db/models');
+const { Post } = require('../../db/models');
 
 const router = express.Router();
 
@@ -11,9 +10,7 @@ const router = express.Router();
 router.get(
     '/',
     async (req, res, next) => {
-        const allPosts = await Post.findAll({
-            include: Comment
-        });
+        const allPosts = await Post.findAll();
 
         const posts = allPosts.map(post => {
             return {
@@ -61,12 +58,9 @@ router.get(
         const post = await Post.findOne({
             where: { id: postId }
         });
-        const comments = await Comment.findAll({
-            where: { postId: postId }
-        });
-        const user = await User.findByPk(post.userId);
+
         if (post) {
-            return res.json({ Post: post, Comments: comments, User: user });
+            return res.json({ Post: post });
         }
         return res.status(404).json({ "message": "Post couldn't be found" });
     }
@@ -115,11 +109,15 @@ router.put(
 
             if (post.userId === userId) {
                 const safePost = {
+                    id: post.id,
+                    userId: userId,
                     title: title,
-                    description: description
+                    description: description,
+                    createdAt: post.createdAt,
+                    updatedAt: post.updatedAt
                 };
                 await post.update(safePost);
-                return res.json({ id: post.id, userId: userId, ...safePost, createdAt: post.createdAt, updatedAt: post.updatedAt });
+                return res.status(201).json(safePost);
             }
         }
         res.status(404).json({ "message": "Post not found" });
@@ -129,10 +127,13 @@ router.put(
 //DELETE A POST
 router.delete(
     '/:postId',
+    requireAuth,
     async (req, res, next) => {
         const userId = req.user.id;
         const postId = req.params.postId;
+
         const post = await Post.findByPk(postId);
+
         if (post) {
             if (post.userId !== userId) {
                 res.status(403).json({ "message": "Forbidden" });

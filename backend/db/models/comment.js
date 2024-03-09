@@ -27,7 +27,8 @@ module.exports = (sequelize, DataTypes) => {
     commentText: {
       type: DataTypes.INTEGER,
       allowNull: false
-    }
+    },
+    
   }, {
     sequelize,
     modelName: "Comment",
