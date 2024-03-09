@@ -37,9 +37,8 @@ module.exports = {
         type: Sequelize.STRING.BINARY,
         allowNull: false
       },
-      profileImg: {
+      profilePicture: {
         type: Sequelize.STRING(255),
-        allowNull: false,
         defaultValue: ""
       },
       createdAt: {
