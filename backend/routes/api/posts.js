@@ -69,6 +69,7 @@ router.get(
 //CREATE NEW POST
 router.post(
     '/new',
+    requireAuth,
     async (req, res, next) => {
         const userId = req.user.id;
         const { title, description } = req.body;

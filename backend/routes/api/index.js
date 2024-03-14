@@ -5,6 +5,7 @@ const sessionRouter = require('./session.js');
 const usersRouter = require('./users.js');
 const spotsRouter = require('./posts.js');
 const commentsRouter = require('./comments.js');
+const upvotesRouter = require('./upvotes.js');
 //You can use requireAuth as middleware for routes that require sign in
 //You can use setTokenCookie as a func to set cookie for user
 
@@ -14,6 +15,7 @@ router.use('/session', sessionRouter);
 router.use('/users', usersRouter);
 router.use('/posts', spotsRouter);
 router.use('/comments', commentsRouter);
+router.use('/upvotes', upvotesRouter);
 // Restore user
 router.get('/restore-user', (req, res) => {
     return res.json(req.user);
