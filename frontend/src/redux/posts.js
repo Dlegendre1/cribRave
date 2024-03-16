@@ -1,4 +1,7 @@
+import { createSelector } from 'reselect';
+
 // ACTION TYPE
+const ADD_POST = 'posts/add';
 const LOAD_POSTS = 'posts/load';
 
 
@@ -6,9 +9,16 @@ const LOAD_POSTS = 'posts/load';
 
 
 // ACTION CREATORS
+const addPost = (post) => {
+    return {
+        type: ADD_POST,
+        payload: post
+    };
+};
+
 const loadPosts = (posts) => {
     return {
-        type: LOAD,
+        type: LOAD_POSTS,
         payload: posts
     };
 };
@@ -16,11 +26,29 @@ const loadPosts = (posts) => {
 
 
 // THUNKS
+export const thunkAddPost = (post) => async (dispatch) => {
+    const response = await csrfFetch("/api/posts/new", {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(post)
+    });
+    if (response.ok) {
+        const newPost = await response.json();
+        dispatch(addPost(newPost));
+        return newPost;
+    } else {
+        const error = response.json();
+        return error;
+    }
+};
+
 export const thunkLoadPosts = () => async (dispatch) => {
     const response = await fetch("/api/posts");
     if (response.ok) {
         const allPosts = await response.json();
-        dispatch(loadPosts(allPosts));
+        dispatch(loadPosts(allPosts.Posts));
     }
     else {
         const error = response;
@@ -28,7 +56,10 @@ export const thunkLoadPosts = () => async (dispatch) => {
     }
 };
 
-
+// SELECTORS
+export const postsArray = createSelector((state) => state.posts, (posts) => {
+    return Object.values(posts);
+});
 
 // REDUCER
 export const postsReducer = (state = {}, action) => {
@@ -36,10 +67,15 @@ export const postsReducer = (state = {}, action) => {
     switch (action.type) {
         case LOAD_POSTS: {
             postsState = {};
-            action.payload.posts.forEach((post) => {
+            action.payload.forEach((post) => {
                 postsState[post.id] = post;
             });
             return postsState;
+        }
+        case ADD_POST: {
+            postsState[action.payload.id] = action.payload;
+            return postsState;
+
         }
 
         default: {
@@ -47,3 +83,5 @@ export const postsReducer = (state = {}, action) => {
         }
     }
 };
+
+export default postsReducer;
