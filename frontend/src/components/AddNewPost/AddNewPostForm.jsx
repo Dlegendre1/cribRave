@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { thunkAddPost } from "../../redux/posts";
+import { useNavigate } from "react-router-dom";
 
 
 const NewPostPage = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const [errors, setErrors] = useState({});
 
     const [title, setTitle] = useState('');
@@ -29,6 +31,7 @@ const NewPostPage = () => {
             }));
         } else {
             setErrors({});
+            navigate(`/`);
         }
     };
 

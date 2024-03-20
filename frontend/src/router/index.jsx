@@ -4,6 +4,8 @@ import SignupFormPage from '../components/SignupFormPage';
 import Layout from './Layout';
 import Splash from '../components/Splash';
 import NewPostPage from '../components/AddNewPost';
+import CurrentUserPosts from '../components/CurrentUserPosts/CurrentUserPosts';
+import PostDetailsPage from '../components/PostDetailsPage/PostDetailsPage';
 
 export const router = createBrowserRouter([
   {
@@ -24,6 +26,19 @@ export const router = createBrowserRouter([
       {
         path: "/posts/new",
         element: <NewPostPage />
+      },
+      {
+        path: "/user/current",
+        element: <CurrentUserPosts />
+      },
+      {
+        path: "/posts/",
+        children: [
+          {
+            path: ':postId',
+            element: <PostDetailsPage />
+          }
+        ]
       }
     ],
   },

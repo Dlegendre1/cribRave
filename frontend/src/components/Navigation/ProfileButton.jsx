@@ -4,9 +4,13 @@ import { thunkLogout } from "../../redux/session";
 import OpenModalMenuItem from "./OpenModalMenuItem";
 import LoginFormModal from "../LoginFormModal";
 import SignupFormModal from "../SignupFormModal";
+import { useNavigate } from "react-router-dom";
+import { userPostsArray } from "../../redux/posts";
+import { thunkLoadPosts } from "../../redux/posts";
 
 function ProfileButton() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [showMenu, setShowMenu] = useState(false);
   const user = useSelector((store) => store.session.user);
   const ulRef = useRef();
@@ -38,6 +42,12 @@ function ProfileButton() {
     closeMenu();
   };
 
+  const handleProfilePage = async (e) => {
+    e.preventDefault();
+    await dispatch(thunkLoadPosts());
+    navigate('/user/current');
+  };
+
   return (
     <>
       <button onClick={toggleMenu}>
@@ -47,8 +57,8 @@ function ProfileButton() {
         <ul className={"profile-dropdown"} ref={ulRef}>
           {user ? (
             <>
-              <li>{user.username}</li>
-              <li>{user.email}</li>
+              <h3>{user.username}</h3>
+              <button onClick={(e) => handleProfilePage(e)}>My Profile</button>
               <li>
                 <button onClick={logout}>Log Out</button>
               </li>

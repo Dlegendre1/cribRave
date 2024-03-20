@@ -1,4 +1,5 @@
 import { csrfFetch } from './csrf';
+import { createSelector } from 'reselect';
 
 //Constants
 const SET_USER = 'session/setUser';
@@ -17,22 +18,22 @@ const removeUser = () => ({
 
 
 export const thunkAuthenticate = () => async (dispatch) => {
-    try{
+    try {
         const response = await csrfFetch("/api/restore-user");
         if (response.ok) {
             const data = await response.json();
             dispatch(setUser(data));
         }
-    } catch (e){
-        return e
+    } catch (e) {
+        return e;
     }
 };
 
 export const thunkLogin = (credentials) => async dispatch => {
-    const {email, password} = credentials
+    const { email, password } = credentials;
     const response = await csrfFetch("/api/session", {
         method: "POST",
-        body: JSON.stringify({credential: email, password})
+        body: JSON.stringify({ credential: email, password })
     });
 
     if (response.ok) {
@@ -40,9 +41,9 @@ export const thunkLogin = (credentials) => async dispatch => {
         dispatch(setUser(data));
     } else if (response.status < 500) {
         const errorMessages = await response.json();
-        return errorMessages
+        return errorMessages;
     } else {
-        return { server: "Something went wrong. Please try again" }
+        return { server: "Something went wrong. Please try again" };
     }
 };
 
@@ -58,9 +59,9 @@ export const thunkSignup = (user) => async (dispatch) => {
         dispatch(setUser(data));
     } else if (response.status < 500) {
         const errorMessages = await response.json();
-        return errorMessages
+        return errorMessages;
     } else {
-        return { server: "Something went wrong. Please try again" }
+        return { server: "Something went wrong. Please try again" };
     }
 };
 
@@ -72,7 +73,13 @@ export const thunkLogout = () => async (dispatch) => {
 };
 
 
+export const currentUser = createSelector((state) => state.session, (session) => {
+    return session.user;
+});
+
 const initialState = { user: null };
+
+
 
 function sessionReducer(state = initialState, action) {
     let newState;
