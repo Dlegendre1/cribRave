@@ -25,7 +25,7 @@ const validateLogin = [
 // Log in
 router.post('/', async (req, res, next) => {
     const { credential, password } = req.body;
-    console.log(credential, password, "************")
+    console.log(credential, password, "************");
     const user = await User.unscoped().findOne({
         where: {
             [Op.or]: {
@@ -47,6 +47,8 @@ router.post('/', async (req, res, next) => {
         id: user.id,
         email: user.email,
         username: user.username,
+        firstName: user.firstName,
+        lastName: user.lastName
     };
 
     await setTokenCookie(res, safeUser);
@@ -57,7 +59,7 @@ router.post('/', async (req, res, next) => {
 });
 
 // Log out
-router.delete('/',(_req, res) => {
+router.delete('/', (_req, res) => {
     res.clearCookie('token');
     return res.json({ message: 'success' });
 });

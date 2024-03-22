@@ -61,10 +61,9 @@ router.get(
 //CREATE NEW COMMENT
 router.post(
     '/:postId',
-    requireAuth,
     async (req, res, next) => {
         const userId = req.user.id;
-        const postId = req.params.postId;
+        const postId = parseInt(req.params.postId);
         const { commentText } = req.body;
 
         const comment = await Comment.create({ userId, postId, commentText });

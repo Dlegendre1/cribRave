@@ -11,14 +11,13 @@ const CurrentUserPosts = () => {
     const navigate = useNavigate();
     const currentUserPosts = useSelector(userPostsArray);
 
-
     useEffect(() => {
         dispatch(thunkLoadPosts());
     }, [dispatch]);
 
     const handleEditPage = async (e) => {
         e.preventDefault();
-        navigate(``)
+        navigate(``);
     };
     return (
         <>

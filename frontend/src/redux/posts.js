@@ -71,10 +71,11 @@ export const thunkLoadPosts = () => async (dispatch) => {
 };
 
 export const thunkPostDetails = (post) => async (dispatch) => {
-    const response = await fetch(`/api/posts/${post.post.id}`);
+    const response = await fetch(`/api/posts/${post.id}`);
     if (response.ok) {
         const data = await response.json();
         dispatch(postDetails(data));
+        return data;
     } else {
         const error = await response.json();
         return error;
@@ -82,7 +83,7 @@ export const thunkPostDetails = (post) => async (dispatch) => {
 };
 
 export const thunkEditPost = (post) => async (dispatch) => {
-    const response = await fetch(`/api/posts/${post.post.id}`, {
+    const response = await fetch(`/api/posts/${post.id}`, {
         method: 'PUT',
         headers: {
             "Content-Type": "application/json"
