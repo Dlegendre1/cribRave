@@ -6,10 +6,19 @@ import { csrfFetch } from "./csrf";
 const ADD_COMMENT = 'comments/add';
 const LOAD_COMMENTS = 'comments/load';
 const DELETE_COMMENT = 'comments/delete';
+const EDIT_COMMENT = 'comments/edit';
+
 // ACTION CREATORS
 const addComment = (comment) => {
     return {
         type: ADD_COMMENT,
+        payload: comment
+    };
+};
+
+const editComment = (comment) => {
+    return {
+        type: EDIT_COMMENT,
         payload: comment
     };
 };
@@ -28,7 +37,6 @@ const deleteComment = (comment) => {
 };
 // THUNKS
 export const thunkAddComment = (comment, postId) => async (dispatch) => {
-    console.log(comment, '');
     const response = await csrfFetch(`/api/comments/${postId}`, {
         method: 'POST',
         headers: {
@@ -42,6 +50,24 @@ export const thunkAddComment = (comment, postId) => async (dispatch) => {
         return newComment;
     } else {
         const error = response.json();
+        return error;
+    }
+};
+
+export const thunkEditComment = (comment) => async (dispatch) => {
+    const response = await csrfFetch(`/api/comments/${comment.id}`, {
+        method: 'PUT',
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(comment)
+    });
+    if (response.ok) {
+        const editedComment = await response.json();
+        dispatch(editComment(editedComment));
+        return editedComment;
+    } else {
+        const error = await response.json();
         return error;
     }
 };
@@ -86,6 +112,7 @@ export const commentsReducer = (state = {}, action) => {
             return commentsState;
         }
 
+        case EDIT_COMMENT:
         case ADD_COMMENT: {
             commentsState[action.payload.id] = action.payload;
             return commentsState;

@@ -15,9 +15,9 @@ const CurrentUserPosts = () => {
         dispatch(thunkLoadPosts());
     }, [dispatch]);
 
-    const handleEditPage = async (e) => {
+    const handleEditPage = async (e, postId) => {
         e.preventDefault();
-        navigate(``);
+        navigate(`/posts/${postId}`, { state: { isEditing: true } });
     };
     return (
         <>
@@ -29,7 +29,7 @@ const CurrentUserPosts = () => {
                                 <PostTile postInfo={post} key={post.id} />
                             </div>
                             <div>
-                                <button type="submit" onClick={handleEditPage}>Edit post</button>
+                                <button type="submit" onClick={(e) => handleEditPage(e, post.id)}>Edit post</button>
 
                                 <OpenModalButton
                                     modalComponent={<DeleteUserPost post={post} />}

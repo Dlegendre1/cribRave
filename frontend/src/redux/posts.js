@@ -7,13 +7,20 @@ const ADD_POST = 'posts/add';
 const LOAD_POSTS = 'posts/load';
 const POST_DETAILS = 'posts/details';
 const DELETE_POST = 'posts/delete';
-
+const EDIT_POST = 'posts/edit';
 
 
 // ACTION CREATORS
 const addPost = (post) => {
     return {
         type: ADD_POST,
+        payload: post
+    };
+};
+
+const editPost = (post) => {
+    return {
+        type: EDIT_POST,
         payload: post
     };
 };
@@ -83,7 +90,7 @@ export const thunkPostDetails = (postId) => async (dispatch) => {
 };
 
 export const thunkEditPost = (post) => async (dispatch) => {
-    const response = await fetch(`/api/posts/${post.id}`, {
+    const response = await csrfFetch(`/api/posts/${post.id}`, {
         method: 'PUT',
         headers: {
             "Content-Type": "application/json"
@@ -92,7 +99,7 @@ export const thunkEditPost = (post) => async (dispatch) => {
     });
     if (response.ok) {
         const editedPost = await response.json();
-        dispatch(postDetails(editedPost));
+        dispatch(editPost(editedPost));
         return editedPost;
     } else {
         const error = await response.json();
@@ -142,6 +149,7 @@ export const postsReducer = (state = {}, action) => {
             postsState[action.payload.id] = action.payload;
             return postsState;
         }
+        case EDIT_POST:
         case POST_DETAILS: {
             postsState[action.payload.id] = action.payload;
             return postsState;
