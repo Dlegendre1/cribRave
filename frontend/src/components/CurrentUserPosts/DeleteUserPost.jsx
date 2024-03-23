@@ -1,8 +1,6 @@
-import { useEffect } from "react";
 import { useModal } from "../../context/Modal";
-import { thunkDeletePost, thunkLoadPosts, userPostsArray } from "../../redux/posts";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { thunkDeletePost } from "../../redux/posts";
+import { useDispatch} from "react-redux";
 
 const DeleteUserPost = (post) => {
     const dispatch = useDispatch();

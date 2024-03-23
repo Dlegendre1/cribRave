@@ -70,11 +70,11 @@ export const thunkLoadPosts = () => async (dispatch) => {
     }
 };
 
-export const thunkPostDetails = (post) => async (dispatch) => {
-    const response = await fetch(`/api/posts/${post.id}`);
+export const thunkPostDetails = (postId) => async (dispatch) => {
+    const response = await fetch(`/api/posts/${postId}`);
     if (response.ok) {
         const data = await response.json();
-        dispatch(postDetails(data));
+        dispatch(postDetails(data.Post));
         return data;
     } else {
         const error = await response.json();
@@ -120,6 +120,12 @@ export const postsArray = createSelector((state) => state.posts, (posts) => {
 export const userPostsArray = createSelector(postsArray, currentUser, (posts, user) => {
     return posts.filter((post) => post.userId === user.id);
 });
+
+export const singularPost = (postId) => {
+    return createSelector(postsArray, (posts) => {
+        return posts.find((post) => post.id === parseInt(postId));
+    });
+};
 
 // REDUCER
 export const postsReducer = (state = {}, action) => {

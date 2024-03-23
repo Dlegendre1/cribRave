@@ -5,6 +5,7 @@ import { csrfFetch } from "./csrf";
 // ACTION TYPE
 const ADD_COMMENT = 'comments/add';
 const LOAD_COMMENTS = 'comments/load';
+const DELETE_COMMENT = 'comments/delete';
 // ACTION CREATORS
 const addComment = (comment) => {
     return {
@@ -19,9 +20,22 @@ const loadComments = (comments) => {
         payload: comments
     };
 };
+const deleteComment = (comment) => {
+    return {
+        type: DELETE_COMMENT,
+        payload: comment
+    };
+};
 // THUNKS
-export const thunkAddComment = (comment) => async (dispatch) => {
-    const response = await csrfFetch(`/api/comments/${comment.postId}`);
+export const thunkAddComment = (comment, postId) => async (dispatch) => {
+    console.log(comment, '');
+    const response = await csrfFetch(`/api/comments/${postId}`, {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(comment)
+    });
     if (response.ok) {
         const newComment = await response.json();
         dispatch(addComment(newComment));
@@ -43,12 +57,23 @@ export const thunkLoadComments = (postId) => async (dispatch) => {
         return error;
     }
 };
+
+export const thunkDeleteComment = (commentId) => async (dispatch) => {
+    const response = await csrfFetch(`/api/comments/${commentId}`, {
+        method: 'DELETE'
+    });
+    if (response.ok) {
+        dispatch(deleteComment(commentId));
+    } else {
+        const error = await response.json();
+        return error;
+    }
+};
 // SELECTORS
 export const commentsArray = createSelector((state) => state.comments, (comments) => {
     return Object.values(comments);
 });
 
-export const postCommentsArray = createSelector(commentsArray,);
 // REDUCER
 export const commentsReducer = (state = {}, action) => {
     let commentsState = { ...state };
@@ -63,6 +88,11 @@ export const commentsReducer = (state = {}, action) => {
 
         case ADD_COMMENT: {
             commentsState[action.payload.id] = action.payload;
+            return commentsState;
+        }
+
+        case DELETE_COMMENT: {
+            delete commentsState[action.payload];
             return commentsState;
         }
 
