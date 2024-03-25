@@ -43,7 +43,7 @@ ENV SCHEMA=${SCHEMA}
 # Create an argument for DATABASE_URL
 ARG DATABASE_URL=
 # Create an ENV variable for DATABASE_URL, use the ARG from the previous line
-ENV DATABASE_URL=${DATABASE_URL}}
+ENV DATABASE_URL=${DATABASE_URL}
 # Create an argument for JWT_SECRET
 ARG JWT_SECRET=
 # Create an ENV variable for JWT_SECRET, use the ARG from the previous line
