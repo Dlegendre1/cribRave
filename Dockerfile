@@ -58,7 +58,7 @@ WORKDIR /var/www
 # copy the backend/package.json into the var/www folder
 COPY --from=backend /backend/package.json .
 # copy the backend/sequelizerc file into the var/www folder
-COPY --from=backend /backend/sequelizerc .
+COPY --from=backend /backend/.sequelizerc .
 # Copy the dist from our frontend image into the var/www/frontend/dist folder (HINT: This will also create a folder for us)
 COPY --from=frontend /frontend/dist frontend/dist
 # Run our install, but only the production (will not install and -DEV deps)
