@@ -32,7 +32,7 @@ const AddNewComment = ({ postId, closeComment }) => {
             <form onSubmit={handleSubmit}>
                 <div>
                     <label>Comment</label>
-                    <input type="text" value={commentText} onChange={(e) => setCommentText(e.target.value)} />
+                    <input type="text" required maxLength={255} value={commentText} onChange={(e) => setCommentText(e.target.value)} />
                     {errors && errors.commentText && <div>{errors.commentText}</div>}
                 </div>
                 <button type="submit">Submit</button>

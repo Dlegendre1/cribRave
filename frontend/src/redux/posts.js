@@ -60,7 +60,7 @@ export const thunkAddPost = (post) => async (dispatch) => {
         dispatch(addPost(newPost));
         return newPost;
     } else {
-        const error = response.json();
+        const error = await response.json();
         return error;
     }
 };

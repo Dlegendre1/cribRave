@@ -52,7 +52,7 @@ const CommentTile = ({ comment }) => {
                     <h3>{comment.userId}</h3>
                 </>
                 }
-                {comment.userId === currentUsers.id && <div>
+                {currentUsers && comment.userId === currentUsers.id && <div>
                     <button onClick={handleEdit}>Edit Comment</button>
                     <OpenModalButton
                         modalComponent={<DeleteComment comment={comment} />}

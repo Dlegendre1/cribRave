@@ -82,7 +82,7 @@ const PostDetailsPage = () => {
                     </>}
                     {!isEditing && <PostTile postInfo={post} />}
                 </div>
-                {user.id === post.userId && <button onClick={handleEdit}>Edit</button>}
+                {user && user.id === post.userId && <button onClick={handleEdit}>Edit</button>}
                 <div>
                     <h2>Comments</h2>
                     {comments.map((comment) => {
@@ -97,7 +97,7 @@ const PostDetailsPage = () => {
                 <div>
                     {showAddComment && <AddNewComment postId={parseInt(postId)} closeComment={closeAddComment} />}
                 </div>
-                <button onClick={handleClick}>Add Comment</button>
+                {user && <button onClick={handleClick}>Add Comment</button>}
             </>
             }
         </>

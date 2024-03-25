@@ -41,13 +41,13 @@ const NewPostPage = () => {
             <form onSubmit={handleSubmit}>
                 <div>
                     <label>Title</label>
-                    <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
+                    <input type="text" value={title} required minLength={5} maxLength={100} onChange={(e) => setTitle(e.target.value)} />
                     {errors && errors.title && <div>{errors.title}</div>}
                 </div>
 
                 <div>
                     <label>Description</label>
-                    <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} />
+                    <input type="text" value={description} required minLength={5} maxLength={1000} onChange={(e) => setDescription(e.target.value)} />
                     {errors && errors.description && <div>{errors.description}</div>}
                 </div>
 

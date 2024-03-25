@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import PostTile from "./PostTile";
 import { useNavigate } from 'react-router-dom';
 import { commentsArray } from '../../redux/comments';
+import { currentUser } from '../../redux/session';
 
 
 
@@ -12,6 +13,7 @@ const Splash = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const posts = useSelector(postsArray);
+  const user = useSelector(currentUser);
   const comments = useSelector(commentsArray);
 
   useEffect(() => {
@@ -22,11 +24,14 @@ const Splash = () => {
     e.preventDefault();
     navigate(`/posts/new`);
   };
-  
+
   return (
     <>
       <div>
         <h1>CribRave</h1>
+        <div>
+          {user && <button type='submit' onClick={handleSubmit}>Create new post!</button>}
+        </div>
         {posts.map((post) => {
           return (
             <div>
@@ -34,9 +39,6 @@ const Splash = () => {
             </div>
           );
         })}
-      </div>
-      <div>
-        <button type='submit' onClick={handleSubmit}>Create new post!</button>
       </div>
     </>
   );

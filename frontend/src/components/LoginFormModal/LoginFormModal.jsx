@@ -41,7 +41,7 @@ function LoginFormModal() {
             required
           />
         </label>
-        {errors.email && <p>{errors.email}</p>}
+        {errors.credential && <p>{errors.credential}</p>}
         <label>
           Password
           <input

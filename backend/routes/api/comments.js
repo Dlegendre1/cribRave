@@ -7,7 +7,12 @@ const { Comment } = require('../../db/models');
 
 const router = express.Router();
 
-
+const validateComment = [
+    check('commentText')
+        .exists({ checkFalsy: true })
+        .isLength({ min: 1 })
+        .withMessage('Comment cannot be empty')
+];
 
 //GET ALL CURRENT USER COMMENTS
 router.get(
@@ -61,6 +66,7 @@ router.get(
 //CREATE NEW COMMENT
 router.post(
     '/:postId',
+    validateComment,
     async (req, res, next) => {
         const userId = req.user.id;
         const postId = parseInt(req.params.postId);
