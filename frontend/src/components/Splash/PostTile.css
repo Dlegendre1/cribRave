@@ -16,3 +16,7 @@
     color: silver;
     box-shadow: -2px 2px 5px black;
 }
+
+.post-info:hover {
+    cursor: pointer;
+}

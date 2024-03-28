@@ -22,3 +22,7 @@ button {
     font-family: 'Rubik', sans-serif;
     align-items: center;
 }
+
+button:hover {
+    cursor: pointer
+}
