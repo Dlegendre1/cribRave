@@ -5,15 +5,14 @@ import { useSelector } from "react-redux";
 
 function Navigation() {
   return (
-    <ul>
-      <li>
+    <div className="navigation">
+      <div>
         <NavLink to="/">Home</NavLink>
-      </li>
-
-      <li>
+      </div>
+      <div>
         <ProfileButton />
-      </li>
-    </ul>
+      </div>
+    </div>
   );
 }
 

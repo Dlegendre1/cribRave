@@ -7,6 +7,8 @@ import SignupFormModal from "../SignupFormModal";
 import { useNavigate } from "react-router-dom";
 import { userPostsArray } from "../../redux/posts";
 import { thunkLoadPosts } from "../../redux/posts";
+import { useModal } from "../../context/Modal";
+import { thunkLogin } from "../../redux/session";
 
 function ProfileButton() {
   const dispatch = useDispatch();
@@ -48,10 +50,14 @@ function ProfileButton() {
     navigate('/user/current');
   };
 
+  const handleDemoLogin = async () => {
+    return await dispatch(thunkLogin({ email: 'demouser@demo.com', password: 'password' }));
+  };
+
   return (
     <>
       <button onClick={toggleMenu}>
-        <i className="fas fa-user-circle" />
+        <i className="fas fa-user" />
       </button>
       {showMenu && (
         <ul className={"profile-dropdown"} ref={ulRef}>
@@ -75,6 +81,7 @@ function ProfileButton() {
                 onItemClick={closeMenu}
                 modalComponent={<SignupFormModal />}
               />
+              <button className="demo-user-button" type="button" onClick={handleDemoLogin}>Demo User</button>
             </>
           )}
         </ul>

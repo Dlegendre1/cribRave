@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-
+import './PostTile.css';
 
 const PostTile = ({ postInfo }) => {
     const navigate = useNavigate();
@@ -8,9 +8,10 @@ const PostTile = ({ postInfo }) => {
     };
     return (
         <>
-            <div onClick={handleClick}>
-                <h2>{postInfo.title}</h2>
-                <div>{postInfo.description}</div>
+            <hr></hr>
+            <div className="post-info" onClick={handleClick}>
+                <h2 className="post-title">{postInfo.title}</h2>
+                <div className="post-description">{postInfo.description}</div>
             </div>
         </>
     );

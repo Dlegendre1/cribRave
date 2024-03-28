@@ -1,1 +1,23 @@
 /* TODO: Add sitewide styles */
+
+body {
+    font-family: 'Helvetica', sans-serif;
+    background-color: rgb(27, 26, 26);
+}
+
+button {
+    height: 25px;
+    background: black;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 18px;
+    color: rgb(255, 255, 255);
+    line-height: 24px;
+    justify-content: center;
+    font-weight: 300;
+    cursor: pointer;
+    box-sizing: border-box;
+    display: flex;
+    font-family: 'Rubik', sans-serif;
+    align-items: center;
+}

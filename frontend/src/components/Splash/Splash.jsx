@@ -6,7 +6,7 @@ import PostTile from "./PostTile";
 import { useNavigate } from 'react-router-dom';
 import { commentsArray } from '../../redux/comments';
 import { currentUser } from '../../redux/session';
-
+import './Splash.css';
 
 
 const Splash = () => {
@@ -27,18 +27,20 @@ const Splash = () => {
 
   return (
     <>
-      <div>
-        <h1>CribRave</h1>
-        <div>
-          {user && <button type='submit' onClick={handleSubmit}>Create new post!</button>}
+      <div className='full-page'>
+        <h1 className='title'>Crib Rave</h1>
+        <div className='splash-page'>
+          <div>
+            {user && <button type='submit' onClick={handleSubmit}>Create new post!</button>}
+          </div>
+          {posts.map((post) => {
+            return (
+              <div className='splash-post-info'>
+                <PostTile postInfo={post} key={post.id} />
+              </div>
+            );
+          })}
         </div>
-        {posts.map((post) => {
-          return (
-            <div>
-              <PostTile postInfo={post} key={post.id} />
-            </div>
-          );
-        })}
       </div>
     </>
   );
