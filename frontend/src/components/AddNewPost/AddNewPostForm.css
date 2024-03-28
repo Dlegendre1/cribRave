@@ -1,0 +1,45 @@
+.create-new-post-form {
+    margin-left: 25%;
+    margin-right: 25%;
+}
+
+.create-new-post-form>h2 {
+    font-size: 40pt;
+    font-weight: bolder;
+}
+
+.create-new-post-form>form {
+    margin-bottom: 2%;
+}
+
+.title-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.description-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.title-container>label {
+    font-size: 30px;
+    font-weight: bolder;
+}
+
+.description-container>label {
+    font-size: 30px;
+    font-weight: bolder;
+}
+
+.title-container>input {
+    font-size: 30pt;
+    font-weight: bold;
+}
+
+.description-container>textarea {
+    font-size: 16pt;
+    height: 200px;
+    overflow-y: auto;
+
+}

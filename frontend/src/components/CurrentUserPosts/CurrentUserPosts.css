@@ -1,0 +1,9 @@
+.current-user-posts {
+    margin-left: 25%;
+    margin-right: 25%
+}
+
+.button-container {
+    display: flex;
+    flex-direction: row;
+}

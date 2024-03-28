@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { thunkAddPost } from "../../redux/posts";
 import { useNavigate } from "react-router-dom";
-
+import './AddNewPostForm.css';
 
 const NewPostPage = () => {
     const dispatch = useDispatch();
@@ -37,22 +37,23 @@ const NewPostPage = () => {
 
     return (
         <>
-            <h2>Create New Post</h2>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>Title</label>
-                    <input type="text" value={title} required minLength={5} maxLength={100} onChange={(e) => setTitle(e.target.value)} />
-                    {errors && errors.title && <div>{errors.title}</div>}
-                </div>
-
-                <div>
-                    <label>Description</label>
-                    <input type="text" value={description} required minLength={5} maxLength={1000} onChange={(e) => setDescription(e.target.value)} />
-                    {errors && errors.description && <div>{errors.description}</div>}
-                </div>
-
-                <button type="submit">Create Post</button>
-            </form>
+            <div className="create-new-post-form">
+                <h2>Create New Post</h2>
+                <form onSubmit={handleSubmit}>
+                    <div className="title-container">
+                        <label>Title</label>
+                        <input type="text" value={title} required minLength={5} maxLength={100} onChange={(e) => setTitle(e.target.value)} />
+                        {errors && errors.title && <div>{errors.title}</div>}
+                    </div>
+                    <br></br>
+                    <div className="description-container">
+                        <label>Description</label>
+                        <textarea value={description} required minLength={5} maxLength={255} onChange={(e) => setDescription(e.target.value)} />
+                        {errors && errors.description && <div>{errors.description}</div>}
+                    </div>
+                    <button type="submit">Create Post</button>
+                </form>
+            </div>
         </>
     );
 

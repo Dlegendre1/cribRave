@@ -46,6 +46,7 @@ function ProfileButton() {
 
   const handleProfilePage = async (e) => {
     e.preventDefault();
+    closeMenu();
     await dispatch(thunkLoadPosts());
     navigate('/user/current');
   };

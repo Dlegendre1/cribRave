@@ -9,6 +9,7 @@ import { commentsArray, thunkLoadComments } from "../../redux/comments";
 import AddNewComment from "../AddNewComment/AddNewComment";
 import DeleteComment from "./DeleteComment";
 import { currentUser } from "../../redux/session";
+import './PostDetailsPage.css';
 
 const PostDetailsPage = () => {
     const { postId } = useParams();
@@ -69,37 +70,42 @@ const PostDetailsPage = () => {
 
     return (
         <>
-            {post && <>
-                <div>
-                    {isEditing && <>
-                        <div>
-                            <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
-                        </div>
-                        <div>
-                            <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} />
-                        </div>
-                        <button type="button" onClick={handleSubmit}>Submit</button>
-                    </>}
-                    {!isEditing && <PostTile postInfo={post} />}
-                </div>
-                {user && user.id === post.userId && <button onClick={handleEdit}>Edit</button>}
-                <div>
-                    <h2>Comments</h2>
-                    {comments.map((comment) => {
-                        return (<>
+            <div className="post-details-page">
+                {post && <>
+                    <div>
+                        {isEditing && <>
                             <div>
-                                <CommentTile comment={comment} />
+                                <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
                             </div>
-                        </>
-                        );
-                    })}
-                </div>
-                <div>
-                    {showAddComment && <AddNewComment postId={parseInt(postId)} closeComment={closeAddComment} />}
-                </div>
-                {user && <button onClick={handleClick}>Add Comment</button>}
-            </>
-            }
+                            <div>
+                                <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} />
+                            </div>
+                            <button type="button" onClick={handleSubmit}>Submit</button>
+                        </>}
+                        {!isEditing && <PostTile postInfo={post} />}
+                    </div>
+                    <br></br>
+                    {user && user.id === post.userId && <button onClick={handleEdit}>Edit</button>}
+                    <div className="comments">
+                        <h2>Comments</h2>
+                        <hr></hr>
+                        {comments.map((comment) => {
+                            return (<>
+                                <div>
+                                    <CommentTile comment={comment} />
+                                </div>
+                                <hr></hr>
+                            </>
+                            );
+                        })}
+                    </div>
+                    <div>
+                        {showAddComment && <AddNewComment postId={parseInt(postId)} closeComment={closeAddComment} />}
+                    </div>
+                    {user && <button className="add-comment-button" onClick={handleClick}>Add Comment</button>}
+                </>
+                }
+            </div>
         </>
     );
 

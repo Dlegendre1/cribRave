@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import OpenModalButton from "../OpenModalButton/OpenModalButtton";
 import PostTile from "../Splash/PostTile";
 import DeleteUserPost from "./DeleteUserPost";
+import './CurrentUserPosts.css';
 
 const CurrentUserPosts = () => {
     const dispatch = useDispatch();
@@ -21,14 +22,15 @@ const CurrentUserPosts = () => {
     };
     return (
         <>
-            <div>
+            <div className="current-user-posts">
                 {currentUserPosts.map((post) => {
                     return (
                         <>
                             <div>
                                 <PostTile postInfo={post} key={post.id} />
                             </div>
-                            <div>
+                            <br></br>
+                            <div className="button-container">
                                 <button type="submit" onClick={(e) => handleEditPage(e, post.id)}>Edit post</button>
 
                                 <OpenModalButton
