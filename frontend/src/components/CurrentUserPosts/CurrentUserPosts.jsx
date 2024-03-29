@@ -23,25 +23,28 @@ const CurrentUserPosts = () => {
     return (
         <>
             <div className="current-user-posts">
-                {currentUserPosts.map((post) => {
-                    return (
-                        <>
-                            <div>
-                                <PostTile postInfo={post} key={post.id} />
-                            </div>
-                            <br></br>
-                            <div className="button-container">
-                                <button type="submit" onClick={(e) => handleEditPage(e, post.id)}>Edit post</button>
+                {currentUserPosts.length > 0 &&
+                    currentUserPosts.map((post) => {
+                        return (
+                            <>
+                                <div>
+                                    <PostTile postInfo={post} key={post.id} />
+                                </div>
+                                <br></br>
+                                <div className="button-container">
+                                    <button type="submit" onClick={(e) => handleEditPage(e, post.id)}>Edit post</button>
 
-                                <OpenModalButton
-                                    modalComponent={<DeleteUserPost post={post} />}
-                                    buttonText="Delete post"
-                                />
+                                    <OpenModalButton
+                                        modalComponent={<DeleteUserPost post={post} />}
+                                        buttonText="Delete post"
+                                    />
 
-                            </div>
-                        </>
-                    );
-                })}
+                                </div>
+                            </>
+                        );
+                    })
+                }
+                {currentUserPosts.length === 0 && <div>You don't have any posts!</div>}
             </div>
         </>
     );

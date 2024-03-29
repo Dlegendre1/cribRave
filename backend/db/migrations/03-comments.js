@@ -27,7 +27,7 @@ module.exports = {
                 allowNull: false,
                 references: {
                     model: 'Posts'
-                }
+                }, onDelete: 'CASCADE'
             },
             commentText: {
                 type: Sequelize.STRING,

@@ -48,7 +48,7 @@ const NewPostPage = () => {
                     <br></br>
                     <div className="description-container">
                         <label>Description</label>
-                        <textarea value={description} required minLength={5} maxLength={255} onChange={(e) => setDescription(e.target.value)} />
+                        <textarea value={description} required minLength={5} maxLength={1000} onChange={(e) => setDescription(e.target.value)} />
                         {errors && errors.description && <div>{errors.description}</div>}
                     </div>
                     <button type="submit">Create Post</button>

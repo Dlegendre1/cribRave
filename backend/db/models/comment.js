@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
 
     static associate(models) {
       Comment.belongsTo(models.User, { foreignKey: "userId" });
-      Comment.belongsTo(models.Post, { foreignKey: "postId" });
+      Comment.belongsTo(models.Post, { foreignKey: "postId", onDelete: 'CASCADE' });
       Comment.hasMany(models.Upvote, { foreignKey: "commentId" });
     }
   }
@@ -28,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false
     },
-    
+
   }, {
     sequelize,
     modelName: "Comment",
