@@ -30,3 +30,7 @@ button:hover {
 .error {
     color: red;
 }
+
+textarea {
+    font-family: 'Helvetica', sans-serif;
+}

@@ -28,7 +28,6 @@ const Splash = () => {
   return (
     <>
       <div className='full-page'>
-        <h1 className='title'>Crib Rave</h1>
         <div className='splash-page'>
           <div>
             {user && <button type='submit' onClick={handleSubmit}>Create new post!</button>}

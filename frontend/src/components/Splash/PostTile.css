@@ -8,6 +8,12 @@
     margin-bottom: 1.5%;
 }
 
+.post-user {
+    margin-left: 2%;
+    margin-bottom: 1.5%;
+    font-style: italic;
+}
+
 .post-info {
     display: flex;
     flex-direction: column;

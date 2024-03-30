@@ -6,12 +6,8 @@ import { useSelector } from "react-redux";
 function Navigation() {
   return (
     <div className="navigation">
-      <div>
-        <NavLink to="/">Home</NavLink>
-      </div>
-      <div>
-        <ProfileButton />
-      </div>
+      <NavLink to="/"><h1 className="title">Crib Rave</h1></NavLink>
+      <ProfileButton />
     </div>
   );
 }

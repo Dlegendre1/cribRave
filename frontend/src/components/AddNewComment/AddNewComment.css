@@ -1,0 +1,10 @@
+.add-comment-form {
+    margin-left: 3%
+}
+
+.comment-container>textarea {
+    width: 69%;
+    overflow-y: auto;
+    resize: none;
+    font-size: 12pt;
+}

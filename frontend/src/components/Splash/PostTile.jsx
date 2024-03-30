@@ -12,6 +12,7 @@ const PostTile = ({ postInfo }) => {
             <div className="post-info" onClick={handleClick}>
                 <h2 className="post-title">{postInfo.title}</h2>
                 <div className="post-description">{postInfo.description}</div>
+                <p className="post-user">{postInfo.username}</p>
             </div>
         </>
     );

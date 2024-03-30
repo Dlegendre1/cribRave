@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
-const { Comment } = require('../../db/models');
+const { Comment, User } = require('../../db/models');
 
 const router = express.Router();
 
@@ -49,16 +49,21 @@ router.get(
             where: { postId: postId }
         });
 
-        const comments = allPostComments.map(comment => {
+
+        const comments = await Promise.all(allPostComments.map(async (comment) => {
+            const user = await User.findOne({
+                where: { id: comment.userId }
+            });
             return {
                 id: comment.id,
                 userId: comment.userId,
+                username: user.username,
                 postId: comment.postId,
                 commentText: comment.commentText,
                 createdAt: comment.createdAt,
                 updatedAt: comment.updatedAt
             };
-        });
+        }));
         res.json({ Comments: comments });
     }
 );
@@ -72,13 +77,19 @@ router.post(
         const postId = parseInt(req.params.postId);
         const { commentText } = req.body;
 
+        if (commentText.trim().length < 1) {
+            return res.status(400).json({ "commentText": "Comment must be at least 1 character" });
+        }
+        const user = await User.findByPk(parseInt(userId));
         const comment = await Comment.create({ userId, postId, commentText });
+
 
         const safeComment = {
             id: comment.id,
             userId: userId,
             postId: postId,
-            commentText: comment.commentText,
+            username: user.username,
+            commentText: comment.commentText.trim(),
             createdAt: comment.createdAt,
             updatedAt: comment.updatedAt
         };
@@ -95,6 +106,8 @@ router.put(
         const userId = req.user.id;
         const commentId = req.params.commentId;
         const { commentText } = req.body;
+
+        const user = await User.findByPk(parseInt(userId));
         const comment = await Comment.findOne({
             where: { id: commentId }
         });
@@ -104,11 +117,16 @@ router.put(
                 res.status(403).json({ "message": "Forbidden" });
             }
 
+            if (commentText.trim().length < 1) {
+                return res.status(400).json({ "commentText": "Comment must be at least 1 character long" });
+            }
+
             const safeComment = {
                 id: commentId,
                 userId: userId,
                 postId: comment.postId,
-                commentText: commentText,
+                username: user.username,
+                commentText: commentText.trim(),
                 createdAt: comment.createdAt,
                 updatedAt: comment.updatedAt
             };

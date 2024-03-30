@@ -2,7 +2,7 @@ const express = require('express');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
-const { Post } = require('../../db/models');
+const { Post, User } = require('../../db/models');
 
 const router = express.Router();
 
@@ -10,18 +10,21 @@ const router = express.Router();
 router.get(
     '/',
     async (req, res, next) => {
+        const userId = req.user.id;
         const allPosts = await Post.findAll();
 
-        const posts = allPosts.map(post => {
+        const posts = await Promise.all(allPosts.map(async (post) => {
+            const user = await User.findByPk(parseInt(post.userId));
             return {
                 id: post.id,
                 userId: post.userId,
                 title: post.title,
+                username: user.username,
                 description: post.description,
                 createdAt: post.createdAt,
                 updatedAt: post.updatedAt
             };
-        });
+        }));
         res.json({ Posts: posts });
     }
 );
@@ -35,12 +38,13 @@ router.get(
         const allUserPosts = await Post.findAll({
             where: { userId: userId },
         });
-
+        const user = await User.findByPk(parseInt(userId));
         const posts = allUserPosts.map(post => {
             return {
                 id: post.id,
                 userId: post.userId,
                 title: post.title,
+                username: user.username,
                 description: post.description,
                 createdAt: post.createdAt,
                 updatedAt: post.updatedAt,
@@ -54,13 +58,16 @@ router.get(
 router.get(
     '/:postId',
     async (req, res, next) => {
+        const userId = req.user.id;
         const postId = req.params.postId;
+
+        const user = await User.findByPk(parseInt(userId));
         const post = await Post.findOne({
             where: { id: postId }
         });
 
         if (post) {
-            return res.json({ Post: post });
+            return res.json({ Post: { ...post, username: user.username } });
         }
         return res.status(404).json({ "message": "Post couldn't be found" });
     }
@@ -82,13 +89,14 @@ router.post(
         if (description.trim().length < 5) {
             return res.status(400).json({ "description": "Post description must be at least 5 characters" });
         }
-
+        const user = await User.findByPk(parseInt(userId));
         const post = await Post.create({ userId, title: title.trim(), description: description.trim() });
 
         const safePost = {
             id: post.id,
             userId: userId,
             title: post.title.trim(),
+            username: user.username,
             description: post.description.trim(),
             createdAt: post.createdAt,
             updatedAt: post.updatedAt
@@ -111,7 +119,7 @@ router.put(
         const postId = req.params.postId;
         const { title, description } = req.body;
         const post = await Post.findByPk(postId);
-
+        const user = await User.findByPk(parseInt(userId));
         if (post) {
             if (post.userId !== userId) {
                 res.status(403).json({ "message": "Forbidden" });
@@ -130,6 +138,7 @@ router.put(
                     id: post.id,
                     userId: userId,
                     title: title.trim(),
+                    username: user.username,
                     description: description.trim(),
                     createdAt: post.createdAt,
                     updatedAt: post.updatedAt

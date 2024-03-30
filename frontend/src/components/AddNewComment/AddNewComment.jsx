@@ -1,6 +1,7 @@
 import { useDispatch } from "react-redux";
 import { useState } from "react";
 import { thunkAddComment } from "../../redux/comments";
+import './AddNewComment.css';
 
 const AddNewComment = ({ postId, closeComment }) => {
     const dispatch = useDispatch();
@@ -15,25 +16,25 @@ const AddNewComment = ({ postId, closeComment }) => {
             commentText
         };
 
-        const res = await dispatch(thunkAddComment(commentDetails, postId));
-
-        if (res.error) {
-            setErrors(prevErrors => ({
-                ...prevErrors,
-                ...(res.error.commentText && { commentText: 'Invalid comment' })
-            }));
-        } else {
+        try {
+            await dispatch(thunkAddComment(commentDetails, postId));
             setErrors({});
             closeComment();
+        }
+        catch (error) {
+            error = await error.json();
+            setErrors(prevErrors => ({
+                ...prevErrors,
+                ...(error.commentText && { commentText: error.commentText })
+            }));
         }
     };
     return (
         <>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>Comment</label>
-                    <input type="text" required maxLength={255} value={commentText} onChange={(e) => setCommentText(e.target.value)} />
-                    {errors && errors.commentText && <div>{errors.commentText}</div>}
+            <form className="add-comment-form" onSubmit={handleSubmit}>
+                <div className="comment-container">
+                    <textarea required maxLength={255} value={commentText} onChange={(e) => setCommentText(e.target.value)} />
+                    {errors && errors.commentText && <div className="error">{errors.commentText}</div>}
                 </div>
                 <button type="submit">Submit</button>
             </form>

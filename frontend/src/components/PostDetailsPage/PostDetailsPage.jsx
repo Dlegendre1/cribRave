@@ -75,20 +75,21 @@ const PostDetailsPage = () => {
         <>
             <div className="post-details-page">
                 {post && <>
-                    <div>
+                    <div className="post-textarea-container">
                         {isEditing && <>
+                            <hr></hr>
                             <div>
-                                <input type="text" value={title} required minLength={5} onChange={(e) => setTitle(e.target.value)} />
+                                <textarea className="post-text-areas" value={title} required minLength={5} onChange={(e) => setTitle(e.target.value)} />
                             </div>
                             <div>
-                                <input type="text" value={description} required minLength={5} onChange={(e) => setDescription(e.target.value)} />
+                                <textarea className="post-text-areas" value={description} required minLength={5} onChange={(e) => setDescription(e.target.value)} />
                             </div>
                             {errors.title && <div className="error">{errors.title}</div>}
                             {errors.description && <div className="error">{errors.description}</div>}
                             <button type="button" onClick={handleSubmit}>Submit</button>
                         </>}
-                        {!isEditing && <PostTile postInfo={post} />}
                     </div>
+                    {!isEditing && <PostTile postInfo={post} />}
                     <br></br>
                     {user && user.id === post.userId && <button onClick={handleEdit}>Edit</button>}
                     <div className="comments">
@@ -107,7 +108,7 @@ const PostDetailsPage = () => {
                     <div>
                         {showAddComment && <AddNewComment postId={parseInt(postId)} closeComment={closeAddComment} />}
                     </div>
-                    {user && <button className="add-comment-button" onClick={handleClick}>Add Comment</button>}
+                    {user && <button className="add-comment-button" onClick={handleClick}>{!showAddComment ? "Add Comment" : "Cancel"}</button>}
                 </>
                 }
             </div>

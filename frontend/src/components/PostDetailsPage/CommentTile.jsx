@@ -4,7 +4,7 @@ import OpenModalButton from "../OpenModalButton/OpenModalButtton";
 import DeleteComment from "./DeleteComment";
 import { useState } from "react";
 import { thunkEditComment } from "../../redux/comments";
-
+import './CommentTile.css';
 
 const CommentTile = ({ comment }) => {
     const dispatch = useDispatch();
@@ -27,36 +27,41 @@ const CommentTile = ({ comment }) => {
             commentText
         };
 
-        const response = await dispatch(thunkEditComment(commentDetails));
-
-        if (response) {
+        try {
+            await dispatch(thunkEditComment(commentDetails));
+            setIsEditing(!isEditing);
+        }
+        catch (error) {
+            error = await error.json();
             setErrors(prevErrors => ({
                 ...prevErrors,
-                ...(response.commentText && { name: 'Invalid comment' })
+                ...(error.commentText && { commentText: error.commentText })
             }));
         }
-        setIsEditing(!isEditing);
     };
 
     return (
         <>
             {isEditing && <>
                 <div>
-                    <input type="text" value={commentText} onChange={(e) => setCommentText(e.target.value)} />
+                    <textarea className="comment-text" value={commentText} onChange={(e) => setCommentText(e.target.value)} />
                 </div>
+                {errors && errors.commentText && <p className="error">{errors.commentText}</p>}
                 <button type="button" onClick={handleSubmit}>Submit</button>
             </>}
             <div>
                 {!isEditing && <>
-                    <h3>{comment.commentText}</h3>
-                    <h3>{comment.userId}</h3>
+                    <p>{comment.commentText}</p>
+                    <h3>{comment.username}</h3>
                 </>
                 }
-                {currentUsers && comment.userId === currentUsers.id && <div>
-                    <button onClick={handleEdit}>Edit Comment</button>
-                    <OpenModalButton
-                        modalComponent={<DeleteComment comment={comment} />}
-                        buttonText="Delete comment" />
+                {currentUsers && comment.userId === currentUsers.id && <div className="edit-delete-button-container">
+                    {!isEditing && <>
+                        <button onClick={handleEdit}>Edit Comment</button>
+                        <OpenModalButton
+                            modalComponent={<DeleteComment comment={comment} />}
+                            buttonText="Delete comment" />
+                    </>}
                 </div>}
             </div>
         </>
