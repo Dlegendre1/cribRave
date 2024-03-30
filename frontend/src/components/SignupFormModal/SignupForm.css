@@ -1,0 +1,18 @@
+.signup-modal {
+    background-color: gray;
+    border: 2px solid white;
+    border-radius: 5px;
+    padding: 20px
+}
+
+.signup-modal label {
+    font-weight: bold;
+    font-size: 14pt;
+    margin-top: 20px;
+    margin-bottom: 20px
+}
+
+.signup-modal label>input {
+    display: flex;
+    flex-direction: column;
+}

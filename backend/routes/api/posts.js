@@ -74,13 +74,22 @@ router.post(
         const userId = req.user.id;
         const { title, description } = req.body;
 
-        const post = await Post.create({ userId, title, description });
+
+        if (title.trim().length < 5) {
+            return res.status(400).json({ "title": "Post title must be at least 5 characters" });
+        }
+
+        if (description.trim().length < 5) {
+            return res.status(400).json({ "description": "Post description must be at least 5 characters" });
+        }
+
+        const post = await Post.create({ userId, title: title.trim(), description: description.trim() });
 
         const safePost = {
             id: post.id,
             userId: userId,
-            title: post.title,
-            description: post.description,
+            title: post.title.trim(),
+            description: post.description.trim(),
             createdAt: post.createdAt,
             updatedAt: post.updatedAt
         };
@@ -108,12 +117,20 @@ router.put(
                 res.status(403).json({ "message": "Forbidden" });
             }
 
+            if (title.trim().length < 5) {
+                return res.status(400).json({ "title": "Post title must be at least 5 characters" });
+            }
+
+            if (description.trim().length < 5) {
+                return res.status(400).json({ "description": "Post description must be at least 5 characters" });
+            }
+
             if (post.userId === userId) {
                 const safePost = {
                     id: post.id,
                     userId: userId,
-                    title: title,
-                    description: description,
+                    title: title.trim(),
+                    description: description.trim(),
                     createdAt: post.createdAt,
                     updatedAt: post.updatedAt
                 };

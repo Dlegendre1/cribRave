@@ -20,19 +20,19 @@ const NewPostPage = () => {
             title,
             description
         };
-
-        const res = await dispatch(thunkAddPost(postDetails));
-
-        if (res.error) {
-            setErrors(prevErrors => ({
-                ...prevErrors,
-                ...(res.error.title && { title: 'Title invalid' }),
-                ...(res.error.description && { description: 'Description invalid' })
-            }));
-        } else {
+        try {
+            await dispatch(thunkAddPost(postDetails));
             setErrors({});
             navigate(`/`);
+        } catch (error) {
+            error = await error.json();
+            setErrors(prevErrors => ({
+                ...prevErrors,
+                ...(error.title && { title: error.title }),
+                ...(error.description && { description: error.description })
+            }));
         }
+
     };
 
     return (
@@ -43,13 +43,13 @@ const NewPostPage = () => {
                     <div className="title-container">
                         <label>Title</label>
                         <input type="text" value={title} required minLength={5} maxLength={100} onChange={(e) => setTitle(e.target.value)} />
-                        {errors && errors.title && <div>{errors.title}</div>}
+                        {errors && errors.title && <div className="error">{errors.title}</div>}
                     </div>
                     <br></br>
                     <div className="description-container">
                         <label>Description</label>
                         <textarea value={description} required minLength={5} maxLength={1000} onChange={(e) => setDescription(e.target.value)} />
-                        {errors && errors.description && <div>{errors.description}</div>}
+                        {errors && errors.description && <div className="error">{errors.description}</div>}
                     </div>
                     <button type="submit">Create Post</button>
                 </form>

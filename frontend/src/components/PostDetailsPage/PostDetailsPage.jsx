@@ -56,16 +56,19 @@ const PostDetailsPage = () => {
             description
         };
 
-        const response = await dispatch(thunkEditPost(postDetails));
-
-        if (response) {
-            setErrors(prevErrors => ({
-                ...prevErrors,
-                ...(response.title && { name: 'Invalid title' }),
-                ...(response.description && { address: 'Invalid description' }),
-            }));
+        try {
+            await dispatch(thunkEditPost(postDetails));
+            setIsEditing(!isEditing);
+        } catch (error) {
+            if (error) {
+                error = await error.json();
+                setErrors(prevErrors => ({
+                    ...prevErrors,
+                    ...(error.title && { title: error.title }),
+                    ...(error.description && { description: error.description })
+                }));
+            }
         }
-        setIsEditing(!isEditing);
     };
 
     return (
@@ -75,11 +78,13 @@ const PostDetailsPage = () => {
                     <div>
                         {isEditing && <>
                             <div>
-                                <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
+                                <input type="text" value={title} required minLength={5} onChange={(e) => setTitle(e.target.value)} />
                             </div>
                             <div>
-                                <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} />
+                                <input type="text" value={description} required minLength={5} onChange={(e) => setDescription(e.target.value)} />
                             </div>
+                            {errors.title && <div className="error">{errors.title}</div>}
+                            {errors.description && <div className="error">{errors.description}</div>}
                             <button type="button" onClick={handleSubmit}>Submit</button>
                         </>}
                         {!isEditing && <PostTile postInfo={post} />}

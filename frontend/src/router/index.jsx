@@ -15,14 +15,14 @@ export const router = createBrowserRouter([
         path: "/",
         element: <Splash />,
       },
-      {
-        path: "login",
-        element: <LoginFormPage />,
-      },
-      {
-        path: "signup",
-        element: <SignupFormPage />,
-      },
+      // {
+      //   path: "login",
+      //   element: <LoginFormPage />,
+      // },
+      // {
+      //   path: "signup",
+      //   element: <SignupFormPage />,
+      // },
       {
         path: "/posts/new",
         element: <NewPostPage />

@@ -15,12 +15,20 @@ const validateSignup = [
         .withMessage('Please provide a valid email.'),
     check('username')
         .exists({ checkFalsy: true })
-        .isLength({ min: 4 })
-        .withMessage('Please provide a username with at least 4 characters.'),
+        .isLength({ min: 2 })
+        .withMessage('Please provide a username with at least 2 characters.'),
     check('username')
         .not()
         .isEmail()
         .withMessage('Username cannot be an email.'),
+    check('firstName')
+        .exists({ checkFalsy: true })
+        .isLength({ min: 2 })
+        .withMessage('Please provide a first name with at least 2 characters.'),
+    check('lastName')
+        .exists({ checkFalsy: true })
+        .isLength({ min: 2 })
+        .withMessage('Please provide a username with at least 2 characters.'),
     check('password')
         .exists({ checkFalsy: true })
         .isLength({ min: 6 })

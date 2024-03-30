@@ -9,6 +9,7 @@ import { userPostsArray } from "../../redux/posts";
 import { thunkLoadPosts } from "../../redux/posts";
 import { useModal } from "../../context/Modal";
 import { thunkLogin } from "../../redux/session";
+import './Navigation.css';
 
 function ProfileButton() {
   const dispatch = useDispatch();
@@ -66,20 +67,21 @@ function ProfileButton() {
             <>
               <h3>{user.username}</h3>
               <button onClick={(e) => handleProfilePage(e)}>My Profile</button>
-              <li>
-                <button onClick={logout}>Log Out</button>
-              </li>
+              <br></br>
+              <button onClick={logout}>Log Out</button>
             </>
           ) : (
             <>
               <OpenModalMenuItem
                 itemText="Log In"
                 onItemClick={closeMenu}
+                className="profile-dropdown-buttons"
                 modalComponent={<LoginFormModal />}
               />
               <OpenModalMenuItem
                 itemText="Sign Up"
                 onItemClick={closeMenu}
+                className="profile-dropdown-buttons"
                 modalComponent={<SignupFormModal />}
               />
               <button className="demo-user-button" type="button" onClick={handleDemoLogin}>Demo User</button>
