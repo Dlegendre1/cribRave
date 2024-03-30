@@ -10,7 +10,6 @@ const router = express.Router();
 router.get(
     '/',
     async (req, res, next) => {
-        const userId = req.user.id;
         const allPosts = await Post.findAll();
 
         const posts = await Promise.all(allPosts.map(async (post) => {
