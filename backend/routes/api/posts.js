@@ -57,16 +57,15 @@ router.get(
 router.get(
     '/:postId',
     async (req, res, next) => {
-        const userId = req.user.id;
         const postId = req.params.postId;
 
-        const user = await User.findByPk(parseInt(userId));
         const post = await Post.findOne({
             where: { id: postId }
         });
 
         if (post) {
-            return res.json({ Post: { ...post, username: user.username } });
+            const user = await User.findByPk(parseInt(post.userId));
+            return res.json({ Post: { ...post.dataValues, ...{ username: user.username } } });
         }
         return res.status(404).json({ "message": "Post couldn't be found" });
     }
