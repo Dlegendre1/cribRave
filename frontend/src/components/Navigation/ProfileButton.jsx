@@ -43,6 +43,7 @@ function ProfileButton() {
     e.preventDefault();
     dispatch(thunkLogout());
     closeMenu();
+    navigate(`/`);
   };
 
   const handleProfilePage = async (e) => {
